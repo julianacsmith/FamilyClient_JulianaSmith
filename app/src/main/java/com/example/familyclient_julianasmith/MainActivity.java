@@ -6,11 +6,17 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.*;
 import android.view.*;
+import android.os.*;
+
+import java.net.MalformedURLException;
 
 import Request.LoginRequest;
 import Request.RegisterRequest;
+import Result.LoginResult;
+import Result.RegisterResult;
 
 public class MainActivity extends AppCompatActivity {
+    private ServerProxy proxy;
 
     private Button loginButton;
     private Button registerButton;
@@ -39,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_login);
+
+        proxy = new ServerProxy();
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
 
@@ -64,24 +72,68 @@ public class MainActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                Handler loginHandler = new Handler();
 
-                //Establish conenction to the server
-                //If success, then react the request and log the user in via the port
-                    // Then swap fragments
-                //If fail, display failed to log user in
                 LoginRequest request = new LoginRequest(username, password);
+                LoginResult loginResult = null;
+                Runnable loginTask = new Runnable() {
+                    private LoginResult result;
+                    @Override
+                    public void run() {
+                        result = proxy.login(localHost, localPort, request);
+
+                        loginHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(result == null || !result.isSuccess()){
+                                    Toast.makeText(MainActivity.this, "Invalid Login", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(MainActivity.this, "Successful Login", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+
+                    public LoginResult getResult() {
+                        return result;
+                    }
+                };
+                Thread loginThread = new Thread(loginTask);
+                loginThread.start();
             }
         });
 
         registerButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                Handler registerHandler = new Handler();
 
-                //Establish conenction to the server
-                //If success, then react the request and log the user in via the port
-                    // Then swap fragments
-                //If fail, display failed to log user in
                 RegisterRequest request = new RegisterRequest(username, password, email, firstName, lastName, gender);
+                RegisterResult registerResult = null;
+                Runnable registerTask = new Runnable() {
+                    private RegisterResult result;
+                    @Override
+                    public void run() {
+                        result = proxy.register(localHost, localPort, request);
+
+                        registerHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(result == null || !result.isSuccess()){
+                                    Toast.makeText(MainActivity.this, "Invalid Register", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(MainActivity.this, "Successful Register! Welcome " + firstName + " " + lastName, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+
+                    public RegisterResult getResult() {
+                        return result;
+                    }
+                };
+                Thread registerThread = new Thread(registerTask);
+                registerThread.start();
             }
         });
 
@@ -137,4 +189,5 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
 }

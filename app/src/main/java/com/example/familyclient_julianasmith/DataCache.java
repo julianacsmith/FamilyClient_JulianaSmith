@@ -1,3 +1,5 @@
+package com.example.familyclient_julianasmith;
+
 import android.app.Person;
 import android.media.metrics.Event;
 
