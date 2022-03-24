@@ -1,5 +1,8 @@
 package com.example.familyclient_julianasmith;
 
+import android.icu.util.Freezable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -8,186 +11,42 @@ import android.widget.*;
 import android.view.*;
 import android.os.*;
 
-import java.net.MalformedURLException;
 
 import Request.LoginRequest;
 import Request.RegisterRequest;
-import Result.LoginResult;
-import Result.RegisterResult;
+import Result.*;
+import Models.*;
 
-public class MainActivity extends AppCompatActivity {
-    private ServerProxy proxy;
-
-    private Button loginButton;
-    private Button registerButton;
-
-    private EditText localHostField;
-    private EditText localPortField;
-    private EditText usernameField;
-    private EditText passwordField;
-    private EditText firstNameField;
-    private EditText lastNameField;
-    private EditText emailField;
-    private RadioGroup genderField;
-
-    private String localHost;
-    private String localPort;
-    private String username;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String gender;
-
-    private boolean allFieldsFilled;
+public class MainActivity extends AppCompatActivity implements LoginFragment.Listener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_login);
+        setContentView(R.layout.activity_main);
 
-        proxy = new ServerProxy();
-        loginButton = findViewById(R.id.loginButton);
-        registerButton = findViewById(R.id.registerButton);
-
-        localHostField = findViewById(R.id.localHostField);
-        localPortField = findViewById(R.id.localPortField);
-        usernameField = findViewById(R.id.usernameField);
-        passwordField = findViewById(R.id.passwordField);
-        firstNameField = findViewById(R.id.firstNameField);
-        lastNameField = findViewById(R.id.lastNameField);
-        emailField = findViewById(R.id.emailAddressField);
-        genderField = findViewById(R.id.gender);
-
-        allFieldsFilled = false;
-
-        localHostField.addTextChangedListener(textWatcher);
-        localPortField.addTextChangedListener(textWatcher);
-        usernameField.addTextChangedListener(textWatcher);
-        passwordField.addTextChangedListener(textWatcher);
-        firstNameField.addTextChangedListener(textWatcher);
-        lastNameField.addTextChangedListener(textWatcher);
-        emailField.addTextChangedListener(textWatcher);
-
-        loginButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Handler loginHandler = new Handler();
-
-                LoginRequest request = new LoginRequest(username, password);
-                LoginResult loginResult = null;
-                Runnable loginTask = new Runnable() {
-                    private LoginResult result;
-                    @Override
-                    public void run() {
-                        result = proxy.login(localHost, localPort, request);
-
-                        loginHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(result == null || !result.isSuccess()){
-                                    Toast.makeText(MainActivity.this, "Invalid Login", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(MainActivity.this, "Successful Login", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    }
-
-                    public LoginResult getResult() {
-                        return result;
-                    }
-                };
-                Thread loginThread = new Thread(loginTask);
-                loginThread.start();
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        Fragment loginFragment = fragmentManager.findFragmentById(R.id.loginFragment);
+        if(loginFragment == null) {
+            loginFragment = createFirstFragment();
+            fragmentManager.beginTransaction()
+                    .add(R.id.loginFragment, loginFragment)
+                    .commit();
+        } else {
+            // If the fragment is not null, the MainActivity was destroyed and recreated
+            // so we need to reset the listener to the new instance of the fragment
+            if(loginFragment instanceof LoginFragment) {
+                ((LoginFragment) loginFragment).registerListener(this);
             }
-        });
-
-        registerButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Handler registerHandler = new Handler();
-
-                RegisterRequest request = new RegisterRequest(username, password, email, firstName, lastName, gender);
-                RegisterResult registerResult = null;
-                Runnable registerTask = new Runnable() {
-                    private RegisterResult result;
-                    @Override
-                    public void run() {
-                        result = proxy.register(localHost, localPort, request);
-
-                        registerHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(result == null || !result.isSuccess()){
-                                    Toast.makeText(MainActivity.this, "Invalid Register", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(MainActivity.this, "Successful Register! Welcome " + firstName + " " + lastName, Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    }
-
-                    public RegisterResult getResult() {
-                        return result;
-                    }
-                };
-                Thread registerThread = new Thread(registerTask);
-                registerThread.start();
-            }
-        });
-
-        genderField.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                if(i == R.id.gender_Male){ // If the id is male
-                    gender = "m";
-                } else {
-                    gender = "f";
-                }
-                if(allFieldsFilled){
-                    registerButton.setEnabled(true);
-                }
-            }
-        });
+        }
+    }
+    private Fragment createFirstFragment() {
+        LoginFragment fragment = new LoginFragment();
+        fragment.registerListener(this);
+        return fragment;
     }
 
-    private final TextWatcher textWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+    @Override
+    public void notifyDone() {
 
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            localHost = localHostField.getText().toString();
-            localPort = localPortField.getText().toString();
-            username = usernameField.getText().toString();
-            password = passwordField.getText().toString();
-            firstName = firstNameField.getText().toString();
-            lastName = lastNameField.getText().toString();
-            email = emailField.getText().toString();
-
-            if(!localHost.isEmpty() && !localPort.isEmpty()){ // If the host an port are filled out
-                if(!username.isEmpty() && !password.isEmpty()){ // If all the login fields are satisfied
-                    loginButton.setEnabled(true); // Enable the login button b/c all params are filled
-                    if (!firstName.isEmpty() && !lastName.isEmpty() && !email.isEmpty() && gender != null){ // If you refill all the fields and the gender button was already clicked before
-                        registerButton.setEnabled(true);
-                    } else if(!firstName.isEmpty() && !lastName.isEmpty() && !email.isEmpty()){ // If the first and last name and email are filled and gender hasn't been selected yet
-                        allFieldsFilled = true; // Set the parameter to true. Now we wait on the gender
-                    } else { // If any of the fields are cleared
-                        registerButton.setEnabled(false); // Disable the register button
-                    }
-                } else { // If a password or username is removed
-                    loginButton.setEnabled(false); // disable the login button
-                }
-            }
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-
-        }
-    };
-
+    }
 }
