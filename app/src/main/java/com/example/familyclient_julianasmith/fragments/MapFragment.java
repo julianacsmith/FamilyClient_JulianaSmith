@@ -1,10 +1,12 @@
-package com.example.familyclient_julianasmith;
+package com.example.familyclient_julianasmith.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.familyclient_julianasmith.R;
 
 /**
  * A simple {@link Fragment} subclass.

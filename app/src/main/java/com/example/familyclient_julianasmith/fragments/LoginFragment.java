@@ -1,4 +1,4 @@
-package com.example.familyclient_julianasmith;
+package com.example.familyclient_julianasmith.fragments;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +12,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import com.example.familyclient_julianasmith.DataCache;
+import com.example.familyclient_julianasmith.R;
+import com.example.familyclient_julianasmith.ServerProxy;
 
 import Models.Person;
 import Request.LoginRequest;
@@ -66,6 +70,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public LoginFragment() {
         // Required empty public constructor
     }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -170,7 +175,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     private PersonResult personResult;
                     @Override
                     public void run() {
+                        DataCache cache = DataCache.getInstance();
                         result = proxy.login(localHost, localPort, request);
+                        cache.setAuthToken(result.getAuthToken());
+                        cache.setUsername(result.getUsername());
                         loginHandler.post(new Runnable() {
                             @Override
                             public void run() {
@@ -181,7 +189,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                                         @Override
                                         public void run() {
                                             personResult = proxy.getPeople(localHost, localPort, result.getAuthToken());
-                                            DataCache cache = DataCache.getInstance();
                                             cache.setPeople(personResult);
                                             Person user = cache.getPersonByID(result.getPersonID());
                                             String firstName = user.getFirstName();
@@ -190,6 +197,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                                                 @Override
                                                 public void run() {
                                                     Toast.makeText(getActivity(), "Successful Login! Welcome " + firstName + " " + lastName, Toast.LENGTH_SHORT).show();
+                                                    if(listener != null){
+                                                        listener.notifyDone();
+                                                    }
                                                 }
                                             });
                                         }
@@ -217,7 +227,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void run() {
                         result = proxy.register(localHost, localPort, request);
-
                         registerHandler.post(new Runnable() {
                             @Override
                             public void run() {
@@ -225,6 +234,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                                     Toast.makeText(getActivity(), "Invalid Register", Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(getActivity(), "Successful Register! Welcome " + firstName + " " + lastName, Toast.LENGTH_SHORT).show();
+                                    if(listener != null){
+                                        listener.notifyDone();
+                                    }
                                 }
                             }
                         });

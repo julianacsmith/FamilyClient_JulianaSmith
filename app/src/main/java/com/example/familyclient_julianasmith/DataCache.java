@@ -22,6 +22,7 @@ public class DataCache {
     private Set<String> maternalAncestors;
     private String authToken;
     private String username;
+    private String userPersonID;
 
     public void setPeople(PersonResult result) {
         this.people = populatePeople(result);
@@ -65,17 +66,17 @@ public class DataCache {
         this.userPersonID = userPersonID;
     }
 
-    private String userPersonID;
+    private String getUserPersonID() { return userPersonID; }
 
-    Person getPersonByID(String personID){
+    public Person getPersonByID(String personID){
         return people.get(personID);
     }
 
-    Event getEventByID(String eventID){
+    public Event getEventByID(String eventID){
         return events.get(eventID);
     }
 
-    List<Event> getPersonEvents(String personID){
+    public List<Event> getPersonEvents(String personID){
         return personEvents.get(personID);
     }
 }

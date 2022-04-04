@@ -1,21 +1,13 @@
-package com.example.familyclient_julianasmith;
+package com.example.familyclient_julianasmith.activities;
 
-import android.icu.util.Freezable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.widget.*;
-import android.view.*;
-import android.os.*;
 
-
-import Request.LoginRequest;
-import Request.RegisterRequest;
-import Result.*;
-import Models.*;
+import com.example.familyclient_julianasmith.R;
+import com.example.familyclient_julianasmith.fragments.LoginFragment;
+import com.example.familyclient_julianasmith.fragments.MapFragment;
 
 public class MainActivity extends AppCompatActivity implements LoginFragment.Listener {
 
@@ -25,17 +17,18 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Lis
         setContentView(R.layout.activity_main);
 
         FragmentManager fragmentManager = this.getSupportFragmentManager();
-        Fragment loginFragment = fragmentManager.findFragmentById(R.id.loginFragment);
-        if(loginFragment == null) {
-            loginFragment = createFirstFragment();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.loginMapLayout);
+
+        if(fragment == null) {
+            fragment = createFirstFragment();
             fragmentManager.beginTransaction()
-                    .add(R.id.loginFragment, loginFragment)
+                    .add(R.id.loginMapLayout, fragment)
                     .commit();
         } else {
             // If the fragment is not null, the MainActivity was destroyed and recreated
             // so we need to reset the listener to the new instance of the fragment
-            if(loginFragment instanceof LoginFragment) {
-                ((LoginFragment) loginFragment).registerListener(this);
+            if(fragment instanceof LoginFragment) {
+                ((LoginFragment) fragment).registerListener(this);
             }
         }
     }
@@ -47,6 +40,9 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Lis
 
     @Override
     public void notifyDone() {
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        Fragment mapFragment = new MapFragment();
 
+        fragmentManager.beginTransaction().replace(R.id.loginMapLayout, mapFragment).commit();
     }
 }

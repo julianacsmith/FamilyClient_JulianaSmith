@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:layout_margin="32dp"
         android:stretchColumns="3"
-        tools:context=".MainActivity">
+        tools:context=".activities.MainActivity">
 
         <TableRow>
             <TextView
