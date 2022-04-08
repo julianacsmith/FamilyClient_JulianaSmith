@@ -1,6 +1,8 @@
 package com.example.familyclient_julianasmith.fragments;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -51,6 +54,7 @@ public class MapFragment extends Fragment {
     private List<Polyline> spousePolylines;
     private List<Polyline> lifeEventPolylines;
     private List<Polyline> familyTreePolylines;
+    private int count;
 
     public interface Listener{
         void notifySwitch(String activity);
@@ -330,6 +334,7 @@ public class MapFragment extends Fragment {
      */
     public void generateMarkers(GoogleMap googleMap, Map<String, Event> events){
         DataCache cache = DataCache.getInstance();
+        count = 0;
         for(Map.Entry<String,Event> event: events.entrySet()) {
             Marker marker = null;
             Event currEvent = event.getValue();
@@ -350,12 +355,36 @@ public class MapFragment extends Fragment {
                     marker.setTag(currEvent.getEventID());
                     break;
                 default:
-                    marker = googleMap.addMarker(new MarkerOptions().position(currEventLocation).title(currEvent.getEventID()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                    marker = googleMap.addMarker(new MarkerOptions().position(currEventLocation).title(currEvent.getEventID()).icon(BitmapDescriptorFactory.defaultMarker(getRandomColor())));
                     marker.setTag(currEvent.getEventID());
                     break;
             }
             markers.add(marker);
         }
+    }
+
+    private float getRandomColor(){
+        switch(count){
+            case 0:
+                count++;
+                return BitmapDescriptorFactory.HUE_GREEN;
+            case 1:
+                count++;
+                return BitmapDescriptorFactory.HUE_YELLOW;
+            case 2:
+                count++;
+                return BitmapDescriptorFactory.HUE_ORANGE;
+            case 3:
+                count++;
+                return BitmapDescriptorFactory.HUE_CYAN;
+            case 4:
+                count++;
+                return BitmapDescriptorFactory.HUE_RED;
+            default:
+                count++;
+                return BitmapDescriptorFactory.HUE_BLUE;
+        }
+
     }
 
     public Map<String, Event> getEventsFromPeople(Map<String, Person> specificAncestors){
