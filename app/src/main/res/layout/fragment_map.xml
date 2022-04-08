@@ -1,14 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragments.MapFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
 
-</FrameLayout>
+        <fragment
+            android:id="@+id/google_map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="578dp" />
+
+        <LinearLayout
+            android:id="@+id/eventDetails"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:padding="10dp"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:id = "@+id/genderIcon"
+                android:background="@drawable/ic_baseline_android_24"/>
+
+            <TextView
+                android:id="@+id/MarkerInfo"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:textSize="20sp"
+                android:text="@string/click_on_a_marker_to_see_event_details" />
+         </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

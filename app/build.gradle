@@ -40,7 +40,18 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'android.arch.navigation:navigation-fragment:1.0.0'
     implementation 'android.arch.navigation:navigation-ui:1.0.0'
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'
+    implementation 'org.jrebirth.af.iconfont-bridge:fontawesome:8.6.0'
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation ("com.joanzapata.iconify:android-iconify:2.2.2") {
+        exclude group: "com.android.support"
+    }
+    implementation ("com.joanzapata.iconify:android-iconify-fontawesome:2.2.2") {
+        exclude group: "com.android.support"
+    }
+
+
 }

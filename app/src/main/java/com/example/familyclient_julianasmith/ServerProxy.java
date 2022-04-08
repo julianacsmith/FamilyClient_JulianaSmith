@@ -142,8 +142,32 @@ public class ServerProxy { // ServerFacade
         return result;
     }
 
-    public EventResult getEvents(){
-        return null;
+    public EventResult getEvents(String serverHost, String serverPort, String authToken){
+        EventResult result = null;
+        try{
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            URL url = new URL("http://" + serverHost + ":" + serverPort + "/event"); // Create a URL with the host, port, and correct path
+
+            HttpURLConnection http = (HttpURLConnection) url.openConnection(); // Open up the connection the the URL
+            http.setRequestMethod("GET"); // getPerson is a GET request
+            http.setDoOutput(false); // http will include a request body
+            http.addRequestProperty("Authorization", authToken);
+            http.connect();
+
+            if(http.getResponseCode() == HttpURLConnection.HTTP_OK){
+                InputStream respBody = http.getInputStream();
+                String respData = readString(respBody);
+                result = (EventResult) gson.fromJson(respData, EventResult.class);
+            } else {
+                System.out.println("ERROR: " + http.getResponseMessage());
+                InputStream respBody = http.getErrorStream();
+                String respData = readString(respBody);
+                result = (EventResult) gson.fromJson(respData, EventResult.class);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
 
     /*

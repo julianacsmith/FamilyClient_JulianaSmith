@@ -16,22 +16,22 @@
         android:theme="@style/Theme.FamilyClientJulianaSmith"
         android:usesCleartextTraffic="true" >
         <activity
-            android:name=".activities.MapActivity"
+            android:name=".activities.PersonActivity"
             android:exported="false" />
+        <activity
+            android:name=".activities.EventActivity"
+            android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBCtM2s7QPCbXPN-GhUKs3y4Mdj8yBaRPE" />
+
         <activity
             android:name=".activities.SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.FilterActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.SettingsActivity"
             android:exported="false" />
-        <activity
-            android:name=".activities.PersonActivity"
-            android:exported="false"
-            android:label="@string/title_activity_person"
-            android:theme="@style/Theme.FamilyClientJulianaSmith.NoActionBar" />
         <activity
             android:name=".activities.MainActivity"
             android:exported="true" >

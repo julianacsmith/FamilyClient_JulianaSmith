@@ -20,6 +20,7 @@ import com.example.familyclient_julianasmith.ServerProxy;
 import Models.Person;
 import Request.LoginRequest;
 import Request.RegisterRequest;
+import Result.EventResult;
 import Result.LoginResult;
 import Result.PersonResult;
 import Result.RegisterResult;
@@ -164,6 +165,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         loginButton.setOnClickListener(this);
         registerButton.setOnClickListener(this);
 
+        DataCache cache = DataCache.getInstance();
+        cache.resetFilters();
+
         loginButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -173,9 +177,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 Runnable loginTask = new Runnable() {
                     private LoginResult result;
                     private PersonResult personResult;
+                    private EventResult eventResult;
                     @Override
                     public void run() {
-                        DataCache cache = DataCache.getInstance();
                         result = proxy.login(localHost, localPort, request);
                         cache.setAuthToken(result.getAuthToken());
                         cache.setUsername(result.getUsername());
@@ -189,10 +193,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                                         @Override
                                         public void run() {
                                             personResult = proxy.getPeople(localHost, localPort, result.getAuthToken());
+                                            eventResult = proxy.getEvents(localHost,localPort,result.getAuthToken());
                                             cache.setPeople(personResult);
+                                            cache.populateEvents(eventResult);
                                             Person user = cache.getPersonByID(result.getPersonID());
                                             String firstName = user.getFirstName();
                                             String lastName = user.getLastName();
+                                            cache.putUserInMaternal(user.getPersonID());
+                                            cache.populateMaternalAncestors(user.getMotherID());
+                                            cache.putUserInPaternal(user.getPersonID());
+                                            cache.populatePaternalAncestors(user.getFatherID());
+                                            cache.addPersonToGender(user.getPersonID(), user.getGender());
+                                            cache.setUserPersonID(user.getPersonID());
                                             personHandler.post(new Runnable() {
                                                 @Override
                                                 public void run() {
@@ -220,28 +232,54 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View view) {
                 Handler registerHandler = new Handler();
-
+                Handler personHandler = new Handler();
                 RegisterRequest request = new RegisterRequest(username, password, email, firstName, lastName, gender);
                 Runnable registerTask = new Runnable() {
                     private RegisterResult result;
                     @Override
                     public void run() {
                         result = proxy.register(localHost, localPort, request);
+                        cache.setAuthToken(result.getAuthToken());
+                        cache.setUsername(username);
                         registerHandler.post(new Runnable() {
                             @Override
                             public void run() {
                                 if(result == null || !result.isSuccess()){
                                     Toast.makeText(getActivity(), "Invalid Register", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Toast.makeText(getActivity(), "Successful Register! Welcome " + firstName + " " + lastName, Toast.LENGTH_SHORT).show();
-                                    if(listener != null){
-                                        listener.notifyDone();
-                                    }
+                                    Runnable personTask = new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            PersonResult personResult = proxy.getPeople(localHost, localPort, result.getAuthToken());
+                                            EventResult eventResult = proxy.getEvents(localHost,localPort,result.getAuthToken());
+                                            cache.setPeople(personResult);
+                                            cache.populateEvents(eventResult);
+                                            Person user = cache.getPersonByID(result.getPersonID());
+                                            String firstName = user.getFirstName();
+                                            String lastName = user.getLastName();
+                                            cache.populateMaternalAncestors(user.getMotherID());
+                                            cache.putUserInMaternal(user.getPersonID());
+                                            cache.populatePaternalAncestors(user.getFatherID());
+                                            cache.putUserInPaternal(user.getPersonID());
+                                            cache.addPersonToGender(user.getPersonID(), user.getGender());
+                                            cache.setUserPersonID(user.getPersonID());
+                                            personHandler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Toast.makeText(getActivity(), "Successful Login! Welcome " + firstName + " " + lastName, Toast.LENGTH_SHORT).show();
+                                                    if(listener != null){
+                                                        listener.notifyDone();
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    };
+                                    Thread personThread = new Thread(personTask);
+                                    personThread.start();
                                 }
                             }
                         });
                     }
-
                     public RegisterResult getResult() {
                         return result;
                     }

@@ -3,10 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/ic_baseline_dehaze_24.xml" value="0.1235" />
+        <entry key="app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.1235" />
+        <entry key="app/src/main/res/layout/activity_event.xml" value="0.11626139817629179" />
+        <entry key="app/src/main/res/layout/activity_filter.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1417266845703125" />
+        <entry key="app/src/main/res/layout/activity_map.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_person.xml" value="0.1388888888888889" />
+        <entry key="app/src/main/res/layout/activity_search.xml" value="0.11626139817629179" />
+        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.18462829589843752" />
+        <entry key="app/src/main/res/layout/event_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/expandable_headers.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.22327898550724637" />
         <entry key="app/src/main/res/layout/fragment_map.xml" value="0.2390625" />
         <entry key="app/src/main/res/layout/fragment_map2.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/person_item.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/options_menu.xml" value="0.21296296296296297" />
+        <entry key="app/src/main/res/menu/search_menu.xml" value="0.1" />
         <entry key="app/src/main/res/xml/network_security_config.xml" value="0.1" />
       </map>
     </option>

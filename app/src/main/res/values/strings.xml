@@ -11,4 +11,15 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="click_on_a_marker_to_see_event_details">Click on a marker to see event details</string>
+    <string name="search">Search</string>
+    <string name="settings" />
+    <string name="congrats_we_re_searching_now_activity_style">Congrats, we\'re searching now activity style</string>
+    <string name="insert_a_super_cool_person_here">Insert a super cool person here</string>
+    <string name="firstname">FirstName</string>
+    <string name="first_name">First Name</string>
+    <string name="lastname" />
+    <string name="LastName" />
+    <string name="last_name">Last Name</string>
+    <string name="gender">Gender</string>
 </resources>

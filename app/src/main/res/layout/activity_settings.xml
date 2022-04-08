@@ -6,4 +6,285 @@
     android:layout_height="match_parent"
     tools:context=".activities.SettingsActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="373dp"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:layout_width="309dp"
+                android:layout_height="60dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="312dp"
+                    android:layout_height="wrap_content"
+                    android:text="Life Story Lines"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="312dp"
+                    android:layout_height="25dp"
+                    android:text="SHOW LIFE STORY LINES" />
+
+            </LinearLayout>
+
+            <Switch
+                android:id="@+id/lifeStoryLinesToggle"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:checked="true" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+        <LinearLayout
+            android:layout_width="373dp"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:layout_width="309dp"
+                android:layout_height="60dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="312dp"
+                    android:layout_height="wrap_content"
+                    android:text="Family Tree Lines"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="312dp"
+                    android:layout_height="25dp"
+                    android:text="SHOW FAMILY TREE LINES" />
+
+            </LinearLayout>
+
+            <Switch
+                android:id="@+id/familyTreeLinesToggle"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:checked="true" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+        <LinearLayout
+            android:layout_width="373dp"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:layout_width="309dp"
+                android:layout_height="60dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="312dp"
+                    android:layout_height="wrap_content"
+                    android:text="Spouse Lines"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="312dp"
+                    android:layout_height="25dp"
+                    android:text="SHOW SPOUSE LINES" />
+
+            </LinearLayout>
+
+            <Switch
+                android:id="@+id/spouseLinesToggle"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:checked="true" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+        <LinearLayout
+            android:layout_width="373dp"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:layout_width="309dp"
+                android:layout_height="60dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="312dp"
+                    android:layout_height="wrap_content"
+                    android:text="Father's Side"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="312dp"
+                    android:layout_height="25dp"
+                    android:text="FILTER BY FATHER'S SIDE OF THE FAMILY" />
+
+            </LinearLayout>
+
+            <Switch
+                android:id="@+id/fatherSideToggle"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:checked="true" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+        <LinearLayout
+            android:layout_width="373dp"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:layout_width="309dp"
+                android:layout_height="60dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="312dp"
+                    android:layout_height="wrap_content"
+                    android:text="Mother's Side"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="312dp"
+                    android:layout_height="25dp"
+                    android:text="FILTER BY MOTHER'S SIDE OF THE FAMILY" />
+
+            </LinearLayout>
+
+            <Switch
+                android:id="@+id/motherSideToggle"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:checked="true" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+        <LinearLayout
+            android:layout_width="373dp"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:layout_width="309dp"
+                android:layout_height="60dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="312dp"
+                    android:layout_height="wrap_content"
+                    android:text="Male Events"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="312dp"
+                    android:layout_height="25dp"
+                    android:text="FILTER EVENTS BASED ON GENDER" />
+
+            </LinearLayout>
+
+            <Switch
+                android:id="@+id/maleEventsToggle"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:checked="true" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+        <LinearLayout
+            android:layout_width="373dp"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:layout_width="309dp"
+                android:layout_height="60dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="312dp"
+                    android:layout_height="wrap_content"
+                    android:text="Female Events"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="312dp"
+                    android:layout_height="25dp"
+                    android:text="FILTER EVENTS BASED ON GENDER" />
+
+            </LinearLayout>
+
+            <Switch
+                android:id="@+id/femaleEventsToggle"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:checked="true" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+        <Button
+            android:id="@+id/logoutButton"
+            android:padding="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="LOGOUT&#10;Return to Login Screen"
+            android:textAlignment="textStart"
+            android:background="@android:color/transparent"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>
